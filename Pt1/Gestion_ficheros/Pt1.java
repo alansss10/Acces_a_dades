@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Pt1 {
@@ -27,16 +28,19 @@ public class Pt1 {
             int c;
             int conteoPalabras = 0;    
             boolean dinsParaula = false;
+            int[] frequencia = new int[65536];
+
 
             while ((c = fr.read()) != -1) {
             if ((char) c != '\n' && (char) c != '\r' && (char) c != ' ') {                   
                 contador++;
+                frequencia[(char) c]++;
             }
                 System.out.println((char) c);
             if ((char) c == '\n') {
                 numLinies++;
             }
-        
+
         System.out.println("Número de caràcters: " + contador);
         System.out.println("Número de línies: " + numLinies);
 
@@ -49,12 +53,31 @@ public class Pt1 {
                     dinsParaula = false;
         }
         System.out.println("Total paraules: " + conteoPalabras);
+        char caracterMesRepetit = ' ';
+        int maxFrequencia = 0;
+        for (int i = 0; i < frequencia.length; i++) {
+        if (frequencia[i] > 0) {
+        System.out.println("'" + (char) i + "': " + frequencia[i] + " vegades");
+        if (frequencia[i] > maxFrequencia) {
+            maxFrequencia = frequencia[i];
+            caracterMesRepetit = (char) i;
+        }
+        }
+    }
+        if (maxFrequencia > 0) {
+            System.out.println("Caràcter més repetit: '" + caracterMesRepetit + "' (" + maxFrequencia + " vegades)");
+        }
     }
 
         fr.close();
 
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: El fitxer no existeix.");
+        } catch (SecurityException e) {
+            System.out.println("Error: No tens permisos per accedir al fitxer.");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error: S'ha produït un error durant la lectura.");
         }
+
     }
 }
